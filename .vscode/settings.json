@@ -1,0 +1,7 @@
+{
+    "python.analysis.extraPaths": [
+        "C:\\Program Files\\obs-studio\\data\\obs-scripting\\64bit"
+    ],
+    "python.envFile": "${workspaceFolder}/.env",
+    "python.terminal.useEnvFile": true
+}
