@@ -181,14 +181,14 @@ begin
       PipInstallCmd := 'cmd.exe /c python -m pip install requests';
       
       if not Exec('cmd.exe', '/c python -m pip install --upgrade pip', '', SW_SHOW, ewWaitUntilTerminated, ResultCode) then
-        MsgBox('Failed to upgrade pip. You may need to install the "requests" library manually.', mbWarning, MB_OK);
+        MsgBox('Failed to upgrade pip. You may need to install the "requests" library manually.', mbInformation, MB_OK);
       
       if not Exec('cmd.exe', '/c python -m pip install requests', '', SW_SHOW, ewWaitUntilTerminated, ResultCode) then
         MsgBox('Failed to install requests library. Please run: pip install requests', mbError, MB_OK)
       else if ResultCode = 0 then
         MsgBox('Dependencies installed successfully!', mbInformation, MB_OK)
       else
-        MsgBox('There was an issue installing dependencies. You may need to run: pip install requests', mbWarning, MB_OK);
+        MsgBox('There was an issue installing dependencies. You may need to run: pip install requests', mbInformation, MB_OK);
     end;
   end;
 end;
