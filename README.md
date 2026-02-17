@@ -31,7 +31,7 @@ If Windows Smart App Control blocks the installer, you can disable by searching 
 3. Follow the prompts (it will automatically install Python 3.11.9 and dependencies if needed)
 4. The script will be installed to: `C:\Program Files\obs-studio\data\obs-plugins\frontend-tools\scripts\`
 
-### Option 3: Manual Installation
+### Option 2: Manual Installation
 
 #### Step 1: Install Python 3.11.9
 

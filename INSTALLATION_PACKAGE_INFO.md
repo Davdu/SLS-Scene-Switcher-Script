@@ -25,7 +25,7 @@ This package contains everything you need to install and distribute the OBS Stre
 - Done!
 
 
-**Option 3: Manual**
+**Option 2: Manual**
 1. Install Python 3.11.9
 2. Run: `pip install requests`
 3. Copy `obs_stream_switcher.py` to `C:\Program Files\obs-studio\data\obs-plugins\frontend-tools\scripts`

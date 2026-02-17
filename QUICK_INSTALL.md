@@ -8,7 +8,7 @@
 3. Follow the installer prompts
 4. Done! The script is installed and ready to use
 
-### Method 3: Manual Installation
+### Method 2: Manual Installation
 1. Install Python 3.11.9 from https://www.python.org/downloads/
    - **Important**: Check "Add Python to PATH" during installation!
 2. Open Command Prompt and run:
