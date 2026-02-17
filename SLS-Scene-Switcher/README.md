@@ -1,6 +1,6 @@
 # OBS Stream Switcher
 
-Automatically switches OBS scenes based on your SLS (Simple Live Server) stream status.
+Automatically switches OBS scenes based on your SLS (SRT Live Server) stream status.
 
 ## Features
 
