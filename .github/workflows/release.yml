@@ -3,7 +3,7 @@ name: Build Installer and Release
 on:
   push:
     tags:
-      - 'v*'
+      - 'v*.*'
   workflow_dispatch:
     inputs:
       tag:
@@ -53,8 +53,8 @@ jobs:
         run: |
           $exe = Get-ChildItem -Path $PWD -Recurse -Filter '*.exe' | Sort-Object LastWriteTime -Descending | Select-Object -First 1
           if (-not $exe) { Write-Error 'No .exe found after build'; exit 1 }
-          echo "exe_path=$($exe.FullName)" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8
-          echo "exe_name=$($exe.Name)" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8
+          Add-Content -Path $env:GITHUB_OUTPUT -Value "exe_path=$($exe.FullName)"
+          Add-Content -Path $env:GITHUB_OUTPUT -Value "exe_name=$($exe.Name)"
 
       - name: Create repository zip
         shell: powershell
