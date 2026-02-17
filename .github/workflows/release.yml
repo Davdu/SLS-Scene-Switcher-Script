@@ -1,0 +1,103 @@
+name: Build Installer and Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release tag (use when running manually)'
+        required: false
+      release_name:
+        description: 'Release name'
+        required: false
+      body:
+        description: 'Release notes/body'
+        required: false
+
+jobs:
+  build-and-release:
+    runs-on: windows-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Ensure Chocolatey available
+        shell: powershell
+        run: choco --version
+
+      - name: Install Inno Setup
+        shell: powershell
+        run: choco install innosetup -y --no-progress
+
+      - name: Compile Inno Setup script
+        shell: powershell
+        run: |
+          if (Get-Command ISCC.exe -ErrorAction SilentlyContinue) {
+            ISCC.exe installer_setup.iss
+          } elseif (Test-Path 'C:\Program Files (x86)\Inno Setup 6\ISCC.exe') {
+            & 'C:\Program Files (x86)\Inno Setup 6\ISCC.exe' installer_setup.iss
+          } else {
+            Write-Error 'ISCC.exe not found'
+            exit 1
+          }
+
+      - name: Find built exe
+        id: findexe
+        shell: powershell
+        run: |
+          $exe = Get-ChildItem -Path $PWD -Recurse -Filter '*.exe' | Sort-Object LastWriteTime -Descending | Select-Object -First 1
+          if (-not $exe) { Write-Error 'No .exe found after build'; exit 1 }
+          echo "exe_path=$($exe.FullName)" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8
+          echo "exe_name=$($exe.Name)" | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8
+
+      - name: Create repository zip
+        shell: powershell
+        run: |
+          $zip = 'repo.zip'
+          if (Test-Path $zip) { Remove-Item $zip -Force }
+          $excludes = @('.git')
+          $items = Get-ChildItem -Path $PWD -Recurse -Force | Where-Object {
+            $skip = $false
+            foreach ($ex in $excludes) { if ($_.FullName -like "*\$ex*") { $skip = $true } }
+            -not $skip
+          }
+          $paths = $items | ForEach-Object { $_.FullName }
+          Compress-Archive -Path $paths -DestinationPath $zip -Force
+
+      - name: Create GitHub release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.event.inputs.tag || github.ref_name }}
+          release_name: ${{ github.event.inputs.release_name || format('Release {0}', github.event.inputs.tag || github.ref_name) }}
+          body: ${{ github.event.inputs.body || 'Automated release created by workflow' }}
+          draft: false
+          prerelease: false
+
+      - name: Upload installer exe to release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ${{ steps.findexe.outputs.exe_path }}
+          asset_name: ${{ steps.findexe.outputs.exe_name }}
+          asset_content_type: application/octet-stream
+
+      - name: Upload repo zip to release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: repo.zip
+          asset_name: repo.zip
+          asset_content_type: application/zip
