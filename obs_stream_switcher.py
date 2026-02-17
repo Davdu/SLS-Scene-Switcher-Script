@@ -174,6 +174,13 @@ def script_update(settings):
 def script_description():
     return "Automatically switches scenes based on the state of the configured SLS stream"
 
+def script_defaults(settings):
+    S.obs_data_set_default_bool(settings, "activateSwitcher", False)
+    S.obs_data_set_default_string(settings, "statsURL", "http://<example>.com/stats")
+    S.obs_data_set_default_string(settings, "publisher", "live/stream/")
+    S.obs_data_set_default_int(settings, "bitrateThreshold", 300)
+    S.obs_data_set_default_int(settings, "queryInterval", 5)
+
 def script_properties():
     props = S.obs_properties_create()
 
