@@ -62,9 +62,7 @@ setup_dependencies.bat
 
 1. Open OBS Studio
 2. Go to: **Tools → Scripts**
-3. Ensure python is loaded in the Python Settings tab
-      a. If python was installed by the installer, it should be in `C:/Program Files/Python311`
-      b. Otherwise locate your python installation folder.
+3. Ensure python is loaded in the Python Settings tab. If python was installed by the installer, it should be in `C:/Program Files/Python311`, otherwise, locate your python installation folder.
 4. Click the **+** button and select `obs_stream_switcher.py`
 5. Configure the settings:
 
