@@ -1,4 +1,3 @@
-import obspython as obs
 import obspython as S
 from itertools import cycle
 
