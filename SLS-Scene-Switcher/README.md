@@ -23,14 +23,7 @@ Automatically switches OBS scenes based on your SLS (Simple Live Server) stream 
 1. Download `OBS_Stream_Switcher_Setup.exe`
 2. Run the installer
 3. Follow the prompts (it will automatically install Python 3.11.9 and dependencies if needed)
-4. The script will be installed to: `%APPDATA%\obs-studio\scripts\`
-
-### Option 2: Python Installer Script
-
-1. Make sure you have Python 3.11.9 installed
-2. Download the installer package
-3. Run: `python simple_installer.py`
-4. Follow the prompts
+4. The script will be installed to: `C:\Program Files\obs-studio\data\obs-plugins\frontend-tools\scripts\`
 
 ### Option 3: Manual Installation
 
@@ -69,8 +62,11 @@ setup_dependencies.bat
 
 1. Open OBS Studio
 2. Go to: **Tools → Scripts**
-3. Click the **+** button and select `obs_stream_switcher.py`
-4. Configure the settings:
+3. Ensure python is loaded in the Python Settings tab
+      a. If python was installed by the installer, it should be in `C:/Program Files/Python311`
+      b. Otherwise locate your python installation folder.
+4. Click the **+** button and select `obs_stream_switcher.py`
+5. Configure the settings:
 
 ### Settings
 
@@ -97,7 +93,7 @@ The script periodically queries your SLS stats endpoint and checks the publisher
 
 ### Script doesn't appear in OBS
 
-- Make sure Python 3.11.9 is installed and in PATH
+- Make sure Python 3.11.9 is installed and referenced in OBS Python Settings
 - Check that the script is in the correct directory
 - Restart OBS Studio
 - Check OBS Script Log (in Scripts window) for errors
@@ -120,14 +116,7 @@ If you have multiple Python versions, you may need to:
 1. Uninstall other Python versions
 2. Reinstall Python 3.11.9
 3. Make sure it's added to PATH
-
-### Script causes OBS to crash on exit
-
-This should be fixed in the current version! The issue was unreleased OBS source references. If you're still experiencing crashes:
-
-1. Make sure you're using the latest version of the script
-2. Check that you have `requests` library installed
-3. Report the issue with crash logs
+OR specify which python version you are using by inputting the full path to the .exe
 
 ## Technical Details
 

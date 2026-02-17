@@ -24,15 +24,11 @@ This package contains everything you need to install and distribute the OBS Stre
 - Follow prompts
 - Done!
 
-**Option 2: Python Installer**
-- Run: `python simple_installer.py`
-- Follow prompts
-- Done!
 
 **Option 3: Manual**
-1. Install Python 3.11.9 (with "Add to PATH" checked)
+1. Install Python 3.11.9
 2. Run: `pip install requests`
-3. Copy `obs_stream_switcher.py` to `%APPDATA%\obs-studio\scripts\`
+3. Copy `obs_stream_switcher.py` to `C:\Program Files\obs-studio\data\obs-plugins\frontend-tools\scripts`
 4. Done!
 
 ### For Developers (Building the Windows Installer):
@@ -42,10 +38,7 @@ This package contains everything you need to install and distribute the OBS Stre
    - Install to default location
 
 2. **Build the Installer**
-   ```
-   build_installer.bat
-   ```
-   Or open `installer_setup.iss` in Inno Setup and click Compile
+   open `installer_setup.iss` in Inno Setup and click Compile
 
 3. **Distribute**
    - The installer will be: `OBS_Stream_Switcher_Setup.exe`
@@ -56,7 +49,6 @@ This package contains everything you need to install and distribute the OBS Stre
 | Method | Ease | Auto-Install Python | Auto-Install Deps | Best For |
 |--------|------|---------------------|-------------------|----------|
 | Windows Installer (.exe) | ⭐⭐⭐⭐⭐ | ✓ | ✓ | End users |
-| Python Installer | ⭐⭐⭐⭐ | ✗ | ✓ | Users with Python |
 | Manual | ⭐⭐ | ✗ | ✗ | Advanced users |
 
 ## Script Configuration (in OBS)
@@ -70,15 +62,10 @@ Once installed, configure in OBS:
    - **Live Scene**: Scene for good stream
    - **Low Scene**: Scene for low bitrate
    - **Offline Scene**: Scene for offline
-   - **Bitrate Threshold**: Minimum bitrate in kbps (e.g., `1000`)
+   - **Bitrate Threshold**: Bitrate for switching scene to 'low' in kbps (e.g., `1000`)
    - **Query Interval**: Check frequency in seconds (e.g., `5`)
 
 ## What's Fixed in This Version
-
-✅ **No more crashes on OBS exit!**
-- Properly releases all OBS source references
-- Uses `obs_source_release()` for memory management
-- Graceful shutdown handling
 
 ✅ **No UI stuttering**
 - Background threading for HTTP requests
@@ -96,16 +83,6 @@ Once installed, configure in OBS:
 2. Upload to your website/GitHub releases
 3. Users download and run - that's it!
 
-### Option 2: Distribute the Python Package
-1. Zip all files together
-2. Users extract and run `simple_installer.py`
-3. Requires Python 3.11.9 pre-installed
-
-### Option 3: Manual Distribution
-1. Share `obs_stream_switcher.py` only
-2. Provide instructions from README.md
-3. Users handle Python/dependencies themselves
-
 ## Requirements
 
 - **OBS Studio** (any recent version)
@@ -114,7 +91,7 @@ Once installed, configure in OBS:
 
 ## License
 
-[Add your license here]
+GPL 3.0
 
 ## Credits
 
@@ -132,10 +109,3 @@ For issues:
 2. Review OBS Script Log
 3. Verify Python 3.11.9 and requests are installed
 4. Report issues with logs if needed
-
----
-
-**Congratulations on fixing the crash issue! 🎉**
-
-The key was properly releasing OBS source references. This is now a 
-production-ready, crash-free script.

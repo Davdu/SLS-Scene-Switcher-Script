@@ -4,8 +4,8 @@
 
 #define MyAppName "OBS Stream Switcher"
 #define MyAppVersion "1.0"
-#define MyAppPublisher "Your Name"
-#define MyAppURL "https://yourwebsite.com"
+#define MyAppPublisher "Mads Andersen"
+#define MyAppURL "N/A"
 #define PythonVersion "3.11.9"
 #define PythonURL "https://www.python.org/ftp/python/3.11.9/python-3.11.9-amd64.exe"
 
@@ -32,10 +32,6 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 [Files]
 ; The main script file
 Source: "obs_stream_switcher.py"; DestDir: "{code:GetOBSScriptPath}"; Flags: ignoreversion
-; Helper scripts
-Source: "setup_dependencies.bat"; DestDir: "{tmp}"; Flags: deleteafterinstall
-Source: "check_python.ps1"; DestDir: "{tmp}"; Flags: deleteafterinstall
-
 [Code]
 var
   PythonInstalled: Boolean;
@@ -59,7 +55,7 @@ end;
 function GetOBSScriptPath(Param: String): String;
 begin
   // OBS scripts are typically stored in user's AppData
-  Result := ExpandConstant('{userappdata}\obs-studio\scripts');
+  Result := ExpandConstant('C:\Program Files\obs-studio\data\obs-plugins\frontend-tools\scripts');
 end;
 
 function CheckPythonInstalled(): Boolean;
@@ -82,8 +78,6 @@ begin
         if Pos('Python 3.11', String(PythonVersionOutput)) > 0 then
         begin
           Result := True;
-          DeleteFile(TempFile);
-          Exit;
         end;
       end;
       DeleteFile(TempFile);
@@ -93,12 +87,18 @@ begin
   // Also check in common installation paths
   if FileExists(ExpandConstant('{localappdata}\Programs\Python\Python311\python.exe')) then
   begin
-    PythonPath := ExpandConstant('{localappdata}\Programs\Python\Python311');
+    PythonPath := '{localappdata}\Programs\Python\Python311\python.exe';
+    
+    Result := True;
+  end
+  else if FileExists('C:\Program Files\Python311\python.exe') then
+  begin
+    PythonPath := 'C:\Program Files\Python311\python.exe';
     Result := True;
   end
   else if FileExists('C:\Python311\python.exe') then
   begin
-    PythonPath := 'C:\Python311';
+    PythonPath := 'C:\Python311\python.exe';
     Result := True;
   end;
 end;
@@ -135,13 +135,11 @@ begin
       
       if MsgBox('Python 3.11.9 needs to be installed. Install now?' + #13#10 + #13#10 + 
                 'The installer will:' + #13#10 +
-                '  - Install Python 3.11.9 for all users' + #13#10 +
-                '  - Add Python to PATH' + #13#10 +
-                '  - Install the required "requests" library', 
+                '  - Install Python 3.11.9 for all users', 
                 mbConfirmation, MB_YESNO) = IDYES then
       begin
         // Install Python silently with options
-        if not Exec(PythonInstaller, '/quiet InstallAllUsers=1 PrependPath=1 Include_pip=1', '', SW_SHOW, ewWaitUntilTerminated, ResultCode) then
+        if not Exec(PythonInstaller, '/quiet InstallAllUsers=1 PrependPath=0 Include_pip=1', '', SW_SHOW, ewWaitUntilTerminated, ResultCode) then
         begin
           MsgBox('Python installation failed. Please install Python 3.11.9 manually from python.org', mbError, MB_OK);
           Result := False;
@@ -164,12 +162,12 @@ begin
       DownloadPage.Hide;
     end;
   end;
+  PythonInstalled := CheckPythonInstalled();
 end;
 
 procedure CurStepChanged(CurStep: TSetupStep);
 var
   ResultCode: Integer;
-  PipInstallCmd: String;
 begin
   if CurStep = ssPostInstall then
   begin
@@ -177,13 +175,11 @@ begin
     if MsgBox('Install Python dependencies (requests library)?' + #13#10 + #13#10 + 
               'This is required for the script to function.', mbConfirmation, MB_YESNO) = IDYES then
     begin
-      // Install requests via pip
-      PipInstallCmd := 'cmd.exe /c python -m pip install requests';
-      
-      if not Exec('cmd.exe', '/c python -m pip install --upgrade pip', '', SW_SHOW, ewWaitUntilTerminated, ResultCode) then
+      // Install requests via pip      
+      if not Exec(PythonPath,  '-m pip install --upgrade pip', '', SW_SHOW, ewWaitUntilTerminated, ResultCode) then
         MsgBox('Failed to upgrade pip. You may need to install the "requests" library manually.', mbInformation, MB_OK);
       
-      if not Exec('cmd.exe', '/c python -m pip install requests', '', SW_SHOW, ewWaitUntilTerminated, ResultCode) then
+      if not Exec(PythonPath, '-m pip install requests', '', SW_SHOW, ewWaitUntilTerminated, ResultCode) then
         MsgBox('Failed to install requests library. Please run: pip install requests', mbError, MB_OK)
       else if ResultCode = 0 then
         MsgBox('Dependencies installed successfully!', mbInformation, MB_OK)
@@ -199,7 +195,7 @@ var
 begin
   if CurUninstallStep = usPostUninstall then
   begin
-    ScriptPath := ExpandConstant('{userappdata}\obs-studio\scripts\obs_stream_switcher.py');
+    ScriptPath := ExpandConstant('C:\Program Files\obs-studio\data\obs-plugins\frontend-tools\scripts\obs_stream_switcher.py');
     if FileExists(ScriptPath) then
       DeleteFile(ScriptPath);
   end;

@@ -8,12 +8,6 @@
 3. Follow the installer prompts
 4. Done! The script is installed and ready to use
 
-### Method 2: Python Script Installer
-1. Make sure Python 3.11.9 is installed
-2. Double-click `simple_installer.py` (or run: `python simple_installer.py`)
-3. Follow the prompts
-4. Done!
-
 ### Method 3: Manual Installation
 1. Install Python 3.11.9 from https://www.python.org/downloads/
    - **Important**: Check "Add Python to PATH" during installation!
@@ -22,7 +16,7 @@
    pip install requests
    ```
 3. Copy `obs_stream_switcher.py` to:
-   - Windows: `%APPDATA%\obs-studio\scripts\`
+   - Windows: `C:\Program Files\obs-studio\data\obs-plugins\frontend-tools\scripts\`
    - Create the folder if it doesn't exist
 4. Done!
 
@@ -30,16 +24,19 @@
 
 1. Open OBS Studio
 2. Go to **Tools → Scripts**
-3. Click the **+** button
-4. Find and select `obs_stream_switcher.py`
-5. Configure your settings:
+3. Ensure python is loaded in the Python Settings tab
+   a. If python was installed by the installer, it should be in `C:/Program Files/Python311`
+   b. Otherwise locate your python installation folder.
+4. Click the **+** button
+5. Find and select `obs_stream_switcher.py`
+6. Configure your settings:
    - Check "Activate Switcher"
    - Enter your Stats URL (e.g., `http://localhost:8080/stats`)
    - Enter your Publisher name (e.g., `live/stream`)
    - Select your scenes for each state
    - Set bitrate threshold (e.g., `1000` kbps)
    - Set query interval (e.g., `5` seconds)
-6. Done! The script will now automatically switch scenes
+7. Done! The script will now automatically switch scenes
 
 ---
 
@@ -52,8 +49,6 @@
    - `installer_setup.iss`
    - `setup_dependencies.bat`
    - `check_python.ps1`
-   - `simple_installer.py`
-   - `build_installer.bat`
    - `README.md`
 
 ### Building the Windows Installer
