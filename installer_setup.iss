@@ -1,11 +1,11 @@
-; OBS Stream Switcher Installer Script
+; SLS Scene Switcher Installer Script
 ; Requires Inno Setup 6.0 or later to compile
 ; Download from: https://jrsoftware.org/isdl.php
 
-#define MyAppName "OBS Stream Switcher"
-#define MyAppVersion "1.0"
+#define MyAppName "SLS Scene Switcher"
+#define MyAppVersion "1.3"
 #define MyAppPublisher "Mads Andersen"
-#define MyAppURL "N/A"
+#define MyAppURL "https://github.com/Davdu/SLS-Scene-Switcher-Script"
 #define PythonVersion "3.11.9"
 #define PythonURL "https://www.python.org/ftp/python/3.11.9/python-3.11.9-amd64.exe"
 
@@ -18,7 +18,7 @@ AppPublisherURL={#MyAppURL}
 DefaultDirName={autopf}\{#MyAppName}
 DisableProgramGroupPage=yes
 OutputDir=.
-OutputBaseFilename=OBS_Stream_Switcher_Setup
+OutputBaseFilename=SLS_Scene_Switcher_{#MyAppVersion}_Setup
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
@@ -202,7 +202,8 @@ begin
 end;
 
 [Run]
-Filename: "{code:GetOBSScriptPath}\obs_stream_switcher.py"; Description: "View installed script"; Flags: shellexec postinstall skipifsilent nowait
+Filename: "https://github.com/Davdu/SLS-Scene-Switcher-Script?tab=readme-ov-file#configuration"; Description: "Open the configuration section on github."; Flags: shellexec postinstall skipifsilent nowait
 
 [Messages]
-WelcomeLabel2=This will install the OBS Stream Switcher script.%n%nThe script automatically switches OBS scenes based on your SLS stream status.%n%nRequirements:%n  - OBS Studio (installed)%n  - Python 3.11.9%n  - requests library%n%nThe installer will check for and install these if needed.
+FinishedHeadingLabel=Finished SLS Scene Switcher Installation.
+
