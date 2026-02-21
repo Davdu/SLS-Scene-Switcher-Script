@@ -3,7 +3,7 @@
 ; Download from: https://jrsoftware.org/isdl.php
 
 #define MyAppName "SLS Scene Switcher"
-#define MyAppVersion "1.3"
+#define MyAppVersion "v1.3"
 #define MyAppPublisher "Mads Andersen"
 #define MyAppURL "https://github.com/Davdu/SLS-Scene-Switcher-Script"
 #define PythonVersion "3.11.9"
@@ -31,7 +31,7 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 
 [Files]
 ; The main script file
-Source: "obs_stream_switcher.py"; DestDir: "{code:GetOBSScriptPath}"; Flags: ignoreversion
+Source: "sls_scene_switcher.py"; DestDir: "{code:GetOBSScriptPath}"; Flags: ignoreversion
 [Code]
 var
   PythonInstalled: Boolean;
@@ -195,7 +195,7 @@ var
 begin
   if CurUninstallStep = usPostUninstall then
   begin
-    ScriptPath := ExpandConstant('C:\Program Files\obs-studio\data\obs-plugins\frontend-tools\scripts\obs_stream_switcher.py');
+    ScriptPath := ExpandConstant('C:\Program Files\obs-studio\data\obs-plugins\frontend-tools\scripts\sls_scene_switcher.py');
     if FileExists(ScriptPath) then
       DeleteFile(ScriptPath);
   end;

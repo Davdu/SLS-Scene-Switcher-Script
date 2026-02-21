@@ -22,14 +22,27 @@ Automatically switches OBS scenes based on your SLS (SRT Live Server) stream sta
 
 **Warning:** 
 
-Windows may block you from executing the installer. In this case, press 'more info' and then 'run anyway'.
+- Windows may block you from executing the installer. In this case, press 'more info' and then 'run anyway'.
 
-If Windows Smart App Control blocks the installer, you can disable by searching "Smart App Control" in the Windows search bar and hitting enter. From here, select 'Off'. The intaller is completely harmless and simply installs python 3.11.9 with the requests module and places the script in the correct folder. You can freely enable Smart App Control after the installation finishes.
+- If Windows Smart App Control blocks the installer, you can disable by searching "Smart App Control" in the Windows search bar and hitting enter. From here, select 'Off'. The intaller is completely harmless and simply installs python 3.11.9 with the requests module and places the script in the correct folder. You can freely enable Smart App Control after the installation finishes.
 
-1. Download `OBS_Stream_Switcher_Setup.exe` from the [latest release](https://github.com/Davdu/SLS-Scene-Switcher-Script/releases)
-2. Run the installer
-3. Follow the prompts (it will automatically install Python 3.11.9 and dependencies if needed)
-4. The script will be installed to: `C:\Program Files\obs-studio\data\obs-plugins\frontend-tools\scripts\`
+#### Step 1: Download Installer 
+
+Download `SLS_Scene_Switcher_v*.*_Setup.exe` from the [latest release](https://github.com/Davdu/SLS-Scene-Switcher-Script/releases)
+
+#### Step 2: Run the installer
+
+Run the installer from your downloads folder.
+
+#### Step 3: Follow the Prompts 
+
+Follow the prompts (it will automatically install Python 3.11.9 and dependencies if needed)
+
+The script will be installed to: `C:\Program Files\obs-studio\data\obs-plugins\frontend-tools\scripts\`
+
+#### Step 4: Configure the script
+
+Configure the script by following the [configuration guide](https://github.com/Davdu/SLS-Scene-Switcher-Script?tab=readme-ov-file#configuration).
 
 ### Option 2: Manual Installation
 
@@ -50,26 +63,25 @@ Open Command Prompt and run:
 pip install requests
 ```
 
-Or use the provided batch file:
-```bash
-setup_dependencies.bat
-```
-
 #### Step 3: Install the Script
 
-1. Copy `obs_stream_switcher.py` to your OBS scripts directory:
+1. Copy `sls_scene_switcher.py` to your OBS scripts directory:
    - **Windows**: `%APPDATA%\obs-studio\scripts\`
    - **macOS**: `~/Library/Application Support/obs-studio/scripts/`
    - **Linux**: `~/.config/obs-studio/scripts/`
 
 2. If the directory doesn't exist, create it manually
 
+#### Step 4: Configure the script
+
+Configure the script by following the [configuration guide](https://github.com/Davdu/SLS-Scene-Switcher-Script?tab=readme-ov-file#configuration).
+
 ## Configuration
 
 1. Open OBS Studio
 2. Go to: **Tools → Scripts**
 3. Ensure python is loaded in the Python Settings tab. If python was installed by the installer, it should be in `C:/Program Files/Python311`, otherwise, locate your python installation folder.
-4. In the Scripts tab, click the **+** button and select `obs_stream_switcher.py`
+4. In the Scripts tab, click the **+** button and select `sls_scene_switcher.py`
 5. Configure the settings:
 
 ### Settings
