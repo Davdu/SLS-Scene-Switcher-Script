@@ -152,13 +152,9 @@ Gracefully handles:
 - Missing publishers
 - Shutdown race conditions
 
-## Version History
-
-- **1.0** - Initial release with proper memory management and crash-free shutdown
-
 ## License
 
-GPL-3.0
+[GPL-3.0](https://github.com/Davdu/SLS-Scene-Switcher-Script/blob/main/LICENSE)
 
 ## Support
 
