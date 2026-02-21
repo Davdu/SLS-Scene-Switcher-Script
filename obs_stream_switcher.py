@@ -31,6 +31,12 @@ def QueryStats(StatsURL, publisher):
         return
     
     try:
+        # Check current scene for being among switchables.
+        currentScene = get_current_scene()
+
+        if not currentScene or currentScene not in switchable_scenes:
+            return
+
         response = R.get(url=StatsURL, timeout=5)
         
         if is_shutting_down or settings_cache is None:
@@ -67,21 +73,10 @@ def switch_scene(scene):
     scenes_list = None
     
     try:
-        # Get current scene
-        current_scene_source = S.obs_frontend_get_current_scene()
-        if not current_scene_source:
-            return
+        # Check current scene again.
+        currentScene = get_current_scene()
         
-        currentScene = S.obs_source_get_name(current_scene_source)
-        
-        # CRITICAL: Release the source reference immediately after getting the name
-        S.obs_source_release(current_scene_source)
-        current_scene_source = None
-        
-        if currentScene not in switchable_scenes:
-            return
-
-        if currentScene == scene:
+        if not currentScene or currentScene not in switchable_scenes or currentScene == scene:
             return
         
         # Get scenes list
@@ -123,6 +118,20 @@ def switch_scene(scene):
                         S.obs_source_release(s)
             except:
                 pass
+
+def get_current_scene():
+    # Get current scene
+        current_scene_source = S.obs_frontend_get_current_scene()
+        if not current_scene_source:
+            return None
+        
+        currentScene = S.obs_source_get_name(current_scene_source)
+        
+        # CRITICAL: Release the source reference immediately after getting the name
+        S.obs_source_release(current_scene_source)
+        current_scene_source = None
+        
+        return currentScene
 
 def script_load(settings):
     global settings_cache, switchable_scenes, is_shutting_down
