@@ -3,7 +3,11 @@
 ; Download from: https://jrsoftware.org/isdl.php
 
 #ifexist "VERSION"
-  #define MyAppVersion Trim(ReadFileLines(SourcePath + "\VERSION")[0])
+  #define FileHandle
+  #define MyAppVersion \
+    FileHandle = FileOpen("VERSION"), \
+    FileRead(FileHandle)
+  #expr FileClose(FileHandle)
 #else
   #define MyAppVersion "1.3-dev"
 #endif
