@@ -35,6 +35,23 @@ jobs:
         shell: powershell
         run: choco install innosetup -y --no-progress
 
+      - name: Extract version from tag and create VERSION file
+        shell: powershell
+        run: |
+          # Get the tag (either from push event or manual input)
+          $version = "${{ github.event.inputs.tag }}"
+          if ([string]::IsNullOrEmpty($version)) {
+            $version = "${{ github.ref_name }}"
+          }
+          
+          Write-Host "Version: $version"
+          
+          # Create VERSION file for Inno Setup
+          Set-Content -Path "VERSION" -Value $version -NoNewline
+          
+          Write-Host "VERSION file created with content: $version"
+          Get-Content "VERSION"
+
       - name: Compile Inno Setup script
         shell: powershell
         run: |
@@ -55,20 +72,6 @@ jobs:
           if (-not $exe) { Write-Error 'No .exe found after build'; exit 1 }
           Add-Content -Path $env:GITHUB_OUTPUT -Value "exe_path=$($exe.FullName)"
           Add-Content -Path $env:GITHUB_OUTPUT -Value "exe_name=$($exe.Name)"
-
-      - name: Create repository zip
-        shell: powershell
-        run: |
-          $zip = 'repo.zip'
-          if (Test-Path $zip) { Remove-Item $zip -Force }
-          $excludes = @('.git')
-          $items = Get-ChildItem -Path $PWD -Recurse -Force | Where-Object {
-            $skip = $false
-            foreach ($ex in $excludes) { if ($_.FullName -like "*\$ex*") { $skip = $true } }
-            -not $skip
-          }
-          $paths = $items | ForEach-Object { $_.FullName }
-          Compress-Archive -Path $paths -DestinationPath $zip -Force
 
       - name: Create GitHub release
         id: create_release
@@ -91,13 +94,3 @@ jobs:
           asset_path: ${{ steps.findexe.outputs.exe_path }}
           asset_name: ${{ steps.findexe.outputs.exe_name }}
           asset_content_type: application/octet-stream
-
-      - name: Upload repo zip to release
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: repo.zip
-          asset_name: repo.zip
-          asset_content_type: application/zip

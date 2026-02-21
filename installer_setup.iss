@@ -2,8 +2,13 @@
 ; Requires Inno Setup 6.0 or later to compile
 ; Download from: https://jrsoftware.org/isdl.php
 
+#ifexist "VERSION"
+  #define MyAppVersion Trim(ReadFileLines(SourcePath + "\VERSION")[0])
+#else
+  #define MyAppVersion "1.3-dev"
+#endif
+
 #define MyAppName "SLS Scene Switcher"
-#define MyAppVersion "v1.3"
 #define MyAppPublisher "Mads Andersen"
 #define MyAppURL "https://github.com/Davdu/SLS-Scene-Switcher-Script"
 #define PythonVersion "3.11.9"
